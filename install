@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+mkdir working
+cd working || exit
+git clone https://github.com/jedisct1/libsodium.git
+git clone https://github.com/zeromq/libzmq.git
+git clone https://github.com/zeromq/czmq.git
+git clone https://github.com/zeromq/malamute.git
+ cd libsodium|| exit
+    ./autogen.sh -s
+    ./configure && make check
+    sudo make install
+    sudo ldconfig
+    cd ..
+for project in libzmq czmq malamute; do
+    cd $project || exit
+    ./autogen.sh
+    ./configure && make check
+    sudo make install
+    sudo ldconfig
+    cd ..
+done
+cd ..
